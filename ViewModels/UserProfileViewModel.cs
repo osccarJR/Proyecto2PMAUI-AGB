@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Input;
+using Microsoft.Maui.Controls;
 
 namespace InterfazTicketsApp.ViewModels
 {
-    internal class UserProfileViewModel
+    public class UserProfileViewModel : BindableObject
     {
+        public string UserName { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPhone { get; set; }
+        public ICommand SaveProfileCommand { get; set; }
+
+        public UserProfileViewModel()
+        {
+            SaveProfileCommand = new Command(OnSaveProfile);
+        }
+
+        private void OnSaveProfile()
+        {
+            // Handle save profile logic here
+        }
     }
 }

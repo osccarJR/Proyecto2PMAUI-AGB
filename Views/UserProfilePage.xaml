@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InterfazTicketsApp.UserProfilePage"
+             x:Class="InterfazTicketsApp.Views.UserProfilePage"
              Title="Perfil de Usuario">
     <Grid>
-            <!-- Imagen de Fondo -->
+        <!-- Imagen de Fondo -->
         <Image Source="interfaz.jpg" Aspect="Fill"
             HorizontalOptions="Fill" VerticalOptions="StartAndExpand"/>
 
@@ -20,7 +21,7 @@
 
                 <!-- Botón de Guardar -->
                 <Button Text="Guardar cambios" 
-                    Clicked="OnSaveProfile" 
+                    Command="{Binding SaveProfileCommand}" 
                     BackgroundColor="#007AFF" 
                     TextColor="White" 
                     FontSize="20" 
