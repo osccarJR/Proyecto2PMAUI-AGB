@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterfazTicketsApp.CommentsPage"
+             Title="Comentarios y Valoraciones">
+    <Grid>
+        <!-- Imagen de Fondo -->
+        <Image Source="interfaz.jpg" Aspect="AspectFill"
+               HorizontalOptions="Fill" VerticalOptions="FillAndExpand"/>
+        <!-- Contenido con Fondo Semitransparente -->
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="15" BackgroundColor="#80000000" VerticalOptions="FillAndExpand">
+                <!-- Título -->
+                <Label Text="Comentarios y Valoraciones" FontSize="28" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+
+                <!-- Lista de Comentarios -->
+                <ListView x:Name="CommentsListView" ItemsSource="{Binding Comments}" BackgroundColor="Transparent" SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Padding="10" Margin="0,10" BackgroundColor="White" CornerRadius="10" HasShadow="True">
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="{Binding UserName}" FontSize="18" FontAttributes="Bold" TextColor="Black" />
+                                        <Label Text="{Binding CommentText}" FontSize="16" TextColor="Gray" />
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Entrada de Nuevo Comentario -->
+                <Entry Placeholder="Escribe un comentario..." Text="{Binding NewComment}" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+                <!-- Botón de Enviar -->
+                <Button Text="Enviar" Command="{Binding SubmitCommentCommand}"
+                        BackgroundColor="#007AFF" TextColor="White" FontSize="20" HeightRequest="50" CornerRadius="10" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

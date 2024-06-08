@@ -1,0 +1,41 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterfazTicketsApp.PurchasePage"
+             Title="Compra de Tickets">
+    <Grid>
+        <!-- Imagen de Fondo -->
+        <Image Source="interfaz.jpg" Aspect="Fill"
+            HorizontalOptions="Fill" VerticalOptions="StartAndExpand"/>
+
+        <!-- Contenido con Fondo Semitransparente -->
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="15" BackgroundColor="#80000000" VerticalOptions="Center">
+                <!-- Título -->
+                <Label Text="Compra de Tickets" FontSize="28" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+
+                <!-- Información del Evento -->
+                <StackLayout BackgroundColor="#CCFFFFFF" Padding="10">
+                    <Label x:Name="EventNameLabel" FontSize="22" TextColor="Black" />
+                    <Label x:Name="EventDateLabel" FontSize="18" TextColor="Gray" />
+                    <Label x:Name="EventLocationLabel" FontSize="18" TextColor="Gray" />
+                </StackLayout>
+
+                <!-- Formulario de Compra -->
+                <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+                <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+                <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" TextColor="Black" BackgroundColor="White" Margin="0,10" />
+
+                <!-- Botón de Compra -->
+                <Button Text="Comprar" 
+                    Clicked="OnConfirmPurchase" 
+                    BackgroundColor="#007AFF" 
+                    TextColor="White" 
+                    FontSize="20" 
+                    HeightRequest="50" 
+                    Margin="0,20" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

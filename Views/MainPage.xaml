@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterfazTicketsApp.MainPage"
+             Title="Buscar Eventos">
+    <Grid>
+        <Image Source="interfaz.jpg" Aspect="Fill" HorizontalOptions="Fill" VerticalOptions="StartAndExpand"/>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <SearchBar Placeholder="Buscar eventos..." Text="{Binding SearchQuery}" BackgroundColor="White" />
+                <Picker Title="Seleccione" TextColor="Black" SelectedItem="{Binding SelectedCategory}" BackgroundColor="White">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Conciertos</x:String>
+                            <x:String>Deportes</x:String>
+                            <x:String>Teatro</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <DatePicker Date="{Binding SelectedDate}" />
+                <Button Text="Buscar" BackgroundColor="#007AFF" TextColor="White" Command="{Binding SearchCommand}" />
+                <ListView x:Name="EventListView" ItemsSource="{Binding Events}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding EventName}" Detail="{Binding EventDate}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
