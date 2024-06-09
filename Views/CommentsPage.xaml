@@ -34,6 +34,12 @@
                 <!-- Botón de Enviar -->
                 <Button Text="Enviar" Command="{Binding SubmitCommentCommand}"
                         BackgroundColor="#007AFF" TextColor="White" FontSize="20" HeightRequest="50" CornerRadius="10" />
+
+                <!-- Botones para Cargar y Guardar Comentarios -->
+                <Button Text="Cargar Comentarios" Command="{Binding LoadCommentsCommand}"
+                        BackgroundColor="#007AFF" TextColor="White" FontSize="20" HeightRequest="50" CornerRadius="10" Margin="10,0" />
+                <Button Text="Guardar Comentarios" Command="{Binding SaveCommentsCommand}"
+                        BackgroundColor="#007AFF" TextColor="White" FontSize="20" HeightRequest="50" CornerRadius="10" Margin="10,0" />
             </StackLayout>
         </ScrollView>
     </Grid>

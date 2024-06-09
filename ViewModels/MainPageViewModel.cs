@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using InterfazTicketsApp.Models;
 
 namespace InterfazTicketsApp.ViewModels
 {
@@ -23,11 +24,5 @@ namespace InterfazTicketsApp.ViewModels
         {
             // Logic for searching events
         }
-    }
-
-    public class Event
-    {
-        public string EventName { get; set; }
-        public DateTime EventDate { get; set; }
     }
 }

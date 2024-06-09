@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using InterfazTicketsApp.Models; // Asegúrate de incluir el espacio de nombres de tus modelos
 
 namespace InterfazTicketsApp.ViewModels
 {
@@ -19,8 +21,8 @@ namespace InterfazTicketsApp.ViewModels
                 EventDescription = "Disfruta de una noche mágica con la mejor música rock interpretada por Van Halen."
             };
 
-            BuyTicketsCommand = new Command(OnBuyTickets);
-            ShareEventCommand = new Command(OnShareEvent);
+            BuyTicketsCommand = new Command(async () => await OnBuyTicketsAsync());
+            ShareEventCommand = new Command(async () => await OnShareEventAsync());
         }
 
         public string EventName => _event.EventName;
@@ -32,14 +34,16 @@ namespace InterfazTicketsApp.ViewModels
         public ICommand BuyTicketsCommand { get; }
         public ICommand ShareEventCommand { get; }
 
-        private void OnBuyTickets()
+        private async Task OnBuyTicketsAsync()
         {
-            // Handle buy tickets logic here
+            await Task.Delay(2000); // Simular una espera asincrónica para la compra de tickets
+            // Lógica para comprar tickets
         }
 
-        private void OnShareEvent()
+        private async Task OnShareEventAsync()
         {
-            // Handle share event logic here
+            await Task.Delay(1000); // Simular una espera asincrónica para compartir el evento
+            // Lógica para compartir el evento
         }
     }
 

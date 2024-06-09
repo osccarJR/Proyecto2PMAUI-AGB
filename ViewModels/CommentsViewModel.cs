@@ -1,6 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
+using InterfazTicketsApp.Models; // Asegúrate de incluir el espacio de nombres de tus modelos
 
 namespace InterfazTicketsApp.ViewModels
 {
@@ -9,6 +14,8 @@ namespace InterfazTicketsApp.ViewModels
         public ObservableCollection<Comment> Comments { get; set; }
         public string NewComment { get; set; }
         public ICommand SubmitCommentCommand { get; set; }
+        public ICommand LoadCommentsCommand { get; set; }
+        public ICommand SaveCommentsCommand { get; set; }
 
         public CommentsViewModel()
         {
@@ -19,6 +26,8 @@ namespace InterfazTicketsApp.ViewModels
             };
 
             SubmitCommentCommand = new Command(OnSubmitComment);
+            LoadCommentsCommand = new Command(async () => await LoadCommentsAsync());
+            SaveCommentsCommand = new Command(async () => await SaveCommentsAsync());
         }
 
         private void OnSubmitComment()
@@ -30,11 +39,57 @@ namespace InterfazTicketsApp.ViewModels
                 OnPropertyChanged(nameof(NewComment));
             }
         }
-    }
 
-    public class Comment
-    {
-        public string UserName { get; set; }
-        public string CommentText { get; set; }
+        private async Task LoadCommentsAsync()
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync();
+                if (result != null)
+                {
+                    using (var stream = await result.OpenReadAsync())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        var fileContent = await reader.ReadToEndAsync();
+                        var comments = fileContent.Split('\n');
+                        Comments.Clear();
+                        foreach (var comment in comments)
+                        {
+                            if (!string.IsNullOrWhiteSpace(comment))
+                            {
+                                Comments.Add(new Comment { UserName = "Usuario", CommentText = comment });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar excepción
+            }
+        }
+
+        private async Task SaveCommentsAsync()
+        {
+            try
+            {
+                var fileResult = await FilePicker.Default.PickAsync();
+                if (fileResult != null)
+                {
+                    using (var stream = await fileResult.OpenReadAsync())
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        foreach (var comment in Comments)
+                        {
+                            await writer.WriteLineAsync(comment.CommentText);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar excepción
+            }
+        }
     }
 }
