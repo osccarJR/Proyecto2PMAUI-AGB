@@ -3,13 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InterfazTicketsApp.Views.MainPage"
              Title="Buscar Eventos">
-    <Grid>
-        <Image Source="interfaz.jpg" Aspect="Fill"
-            HorizontalOptions="Fill" VerticalOptions="StartAndExpand"/>
+    <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10">
-                <SearchBar Placeholder="Buscar eventos..." Text="{Binding SearchQuery}" BackgroundColor="White" />
-                <Picker Title="Seleccione" TextColor="Black" SelectedItem="{Binding SelectedCategory}" BackgroundColor="White">
+            <StackLayout Padding="10" Spacing="15">
+                <SearchBar Placeholder="Buscar eventos..." Text="{Binding SearchQuery}" />
+                <Picker Title="Seleccione" SelectedItem="{Binding SelectedCategory}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Conciertos</x:String>
@@ -19,7 +17,7 @@
                     </Picker.ItemsSource>
                 </Picker>
                 <DatePicker Date="{Binding SelectedDate}" />
-                <Button Text="Buscar" BackgroundColor="#007AFF" TextColor="White" Command="{Binding SearchCommand}" />
+                <Button Text="Buscar" Command="{Binding SearchCommand}" />
                 <ListView x:Name="EventListView" ItemsSource="{Binding Events}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -29,5 +27,5 @@
                 </ListView>
             </StackLayout>
         </ScrollView>
-    </Grid>
+    </ContentPage.Content>
 </ContentPage>

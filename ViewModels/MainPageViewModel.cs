@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using InterfazTicketsApp.Models;
@@ -11,8 +10,8 @@ namespace InterfazTicketsApp.ViewModels
         public string SearchQuery { get; set; }
         public string SelectedCategory { get; set; }
         public DateTime SelectedDate { get; set; }
-        public ICommand SearchCommand { get; set; }
-        public ObservableCollection<Event> Events { get; set; }
+        public ICommand SearchCommand { get; }
+        public ObservableCollection<Event> Events { get; }
 
         public MainPageViewModel()
         {

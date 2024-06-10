@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
-using InterfazTicketsApp.Models; // Asegúrate de incluir el espacio de nombres de tus modelos
+using InterfazTicketsApp.Models;
 
 namespace InterfazTicketsApp.ViewModels
 {
@@ -66,6 +66,7 @@ namespace InterfazTicketsApp.ViewModels
             catch (Exception ex)
             {
                 // Manejar excepción
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar comentarios: {ex.Message}", "OK");
             }
         }
 
@@ -73,22 +74,22 @@ namespace InterfazTicketsApp.ViewModels
         {
             try
             {
-                var fileResult = await FilePicker.Default.PickAsync();
-                if (fileResult != null)
+                string fileName = Path.Combine(FileSystem.CacheDirectory, "comments.txt");
+                using (var stream = File.Create(fileName))
+                using (var writer = new StreamWriter(stream))
                 {
-                    using (var stream = await fileResult.OpenReadAsync())
-                    using (var writer = new StreamWriter(stream))
+                    foreach (var comment in Comments)
                     {
-                        foreach (var comment in Comments)
-                        {
-                            await writer.WriteLineAsync(comment.CommentText);
-                        }
+                        await writer.WriteLineAsync(comment.CommentText);
                     }
                 }
+
+                await Application.Current.MainPage.DisplayAlert("Guardado", "Comentarios guardados exitosamente.", "OK");
             }
             catch (Exception ex)
             {
                 // Manejar excepción
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al guardar comentarios: {ex.Message}", "OK");
             }
         }
     }

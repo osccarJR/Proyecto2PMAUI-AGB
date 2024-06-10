@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
-using InterfazTicketsApp.Models; // Asegúrate de incluir el espacio de nombres de tus modelos
+using InterfazTicketsApp.Models;
 
 namespace InterfazTicketsApp.ViewModels
 {
     public class EventDetailViewModel : BindableObject
     {
-        private DetaiilEvent _event;
+        private readonly DetaiilEvent _event;
 
         public EventDetailViewModel()
         {
@@ -36,14 +36,28 @@ namespace InterfazTicketsApp.ViewModels
 
         private async Task OnBuyTicketsAsync()
         {
-            await Task.Delay(2000); // Simular una espera asincrónica para la compra de tickets
-            // Lógica para comprar tickets
+            try
+            {
+                await Task.Delay(2000); // Simular una espera asincrónica para la compra de tickets
+                await Application.Current.MainPage.DisplayAlert("Compra Exitosa", "¡Has comprado tus tickets exitosamente!", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al comprar tickets: {ex.Message}", "OK");
+            }
         }
 
         private async Task OnShareEventAsync()
         {
-            await Task.Delay(1000); // Simular una espera asincrónica para compartir el evento
-            // Lógica para compartir el evento
+            try
+            {
+                await Task.Delay(1000); // Simular una espera asincrónica para compartir el evento
+                await Application.Current.MainPage.DisplayAlert("Compartir", "Evento compartido exitosamente.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al compartir el evento: {ex.Message}", "OK");
+            }
         }
     }
 

@@ -3,23 +3,17 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="InterfazTicketsApp.Views.EventDetailPage"
             Title="Detalles del Evento">
-
-    <Grid>
-
-        <Image Source="interfaz.jpg" Aspect="Fill"
-            HorizontalOptions="Fill" VerticalOptions="StartAndExpand"/>
-
+    <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10" BackgroundColor="#00000000">
-
-                <Button Text="Comprar Tickets" Command="{Binding BuyTicketsCommand}" />
-                <Label Text="{Binding EventName}" FontSize="24" FontAttributes="Bold" />
+            <StackLayout Padding="10" Spacing="15">
+                <Label Text="{Binding EventName}" Style="{StaticResource TitleLabel}" />
                 <Image Source="{Binding EventImage}" HeightRequest="200" />
                 <Label Text="{Binding EventDate}" FontSize="18" />
                 <Label Text="{Binding EventLocation}" FontSize="18" />
-                <Label Text="{Binding EventDescription}" FontSize="16" />
+                <Label Text="{Binding EventDescription}" FontSize="16" TextColor="{StaticResource SecondaryTextColor}" />
+                <Button Text="Comprar Tickets" Command="{Binding BuyTicketsCommand}" />
                 <Button Text="Compartir Evento" Command="{Binding ShareEventCommand}" />
             </StackLayout>
         </ScrollView>
-    </Grid>
+    </ContentPage.Content>
 </ContentPage>
