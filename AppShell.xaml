@@ -11,5 +11,4 @@
         <ShellContent Title="Perfil" Icon="perfil.jpg" ContentTemplate="{DataTemplate local:UserProfilePage}" />
         <ShellContent Title="Comentarios" Icon="comentario.jpg" ContentTemplate="{DataTemplate local:CommentsPage}" />
     </TabBar>
-
 </Shell>

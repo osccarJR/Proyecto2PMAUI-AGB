@@ -60,6 +60,7 @@
 	  <None Remove="Resources\Images\buscar.jpg" />
 	  <None Remove="Resources\Images\enviar.jpg" />
 	  <None Remove="Resources\Images\interfaz.jpg" />
+	  <None Remove="Resources\Images\jazz.png" />
 	  <None Remove="Resources\Images\perfil.jpg" />
 	  <None Remove="Resources\Images\rock.jpg" />
 	</ItemGroup>

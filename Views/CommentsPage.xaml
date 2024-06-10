@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InterfazTicketsApp.Views.CommentsPage"
-             Title="Comentarios y Valoraciones " 
+             Title="Comentarios y Valoraciones" 
              IconImageSource="comentario.jpg">
     <ContentPage.Content>
         <ScrollView>

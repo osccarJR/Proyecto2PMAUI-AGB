@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InterfazTicketsApp.Models
+﻿namespace InterfazTicketsApp.Models
 {
     public class Event
     {

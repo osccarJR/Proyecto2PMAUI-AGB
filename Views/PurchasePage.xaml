@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InterfazTicketsApp.Views.PurchasePage"
@@ -10,22 +10,25 @@
                 <!-- Título -->
                 <Label Text="Compra de Tickets" Style="{StaticResource TitleLabel}" HorizontalOptions="Center"/>
 
+                <!-- Selección de Evento -->
+                <Picker Title="Seleccione el evento" ItemsSource="{Binding Events}" ItemDisplayBinding="{Binding EventName}" SelectedItem="{Binding SelectedEvent}"/>
+
                 <!-- Información del Evento -->
                 <StackLayout BackgroundColor="{StaticResource CardBackgroundColor}" Padding="10">
-                    <Label x:Name="EventNameLabel" FontSize="22" TextColor="{StaticResource TextColor}" />
-                    <Label x:Name="EventDateLabel" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
-                    <Label x:Name="EventLocationLabel" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
+                    <Label x:Name="EventNameLabel" Text="{Binding SelectedEvent.EventName}" FontSize="22" TextColor="{StaticResource TextColor}" />
+                    <Label x:Name="EventDateLabel" Text="{Binding SelectedEvent.EventDate, StringFormat='dd/MM/yyyy'}" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
+                    <Label x:Name="EventLocationLabel" Text="{Binding SelectedEvent.EventLocation}" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
                 </StackLayout>
 
                 <!-- Formulario de Compra -->
-                <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" />
-                <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" />
-                <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" />
-                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" />
-                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" />
+                <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" Text="{Binding TicketQuantity}"/>
+                <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" Text="{Binding CardName}"/>
+                <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" Text="{Binding CardNumber}"/>
+                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" Text="{Binding CardExpiry}"/>
+                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" Text="{Binding CardCVC}"/>
 
                 <!-- Botón de Compra -->
-                <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" />
+                <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" IsEnabled="{Binding IsPurchaseEnabled}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
