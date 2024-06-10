@@ -1,6 +1,6 @@
 using Microsoft.Maui.Controls;
 using System.Threading.Tasks;
-using InterfazTicketsApp.ViewModels; 
+using InterfazTicketsApp.ViewModels;
 
 namespace InterfazTicketsApp.Views
 {
@@ -10,7 +10,6 @@ namespace InterfazTicketsApp.Views
         {
             InitializeComponent();
             BindingContext = new CommentsViewModel();
-            // Configurar eventos para los botones
             SubmitButton.Clicked += async (sender, e) => await AnimateButton(sender as Button);
             LoadButton.Clicked += async (sender, e) => await AnimateButton(sender as Button);
             SaveButton.Clicked += async (sender, e) => await AnimateButton(sender as Button);

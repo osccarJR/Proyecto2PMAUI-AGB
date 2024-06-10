@@ -18,7 +18,7 @@
                     </Picker.ItemsSource>
                 </Picker>
                 <DatePicker Date="{Binding SelectedDate}" />
-                <Button Text="Buscar" Command="{Binding SearchCommand}" />
+                <Button x:Name="SearchButton" Text="Buscar" Command="{Binding SearchCommand}" />
                 <ListView x:Name="EventListView" ItemsSource="{Binding Events}">
                     <ListView.ItemTemplate>
                         <DataTemplate>

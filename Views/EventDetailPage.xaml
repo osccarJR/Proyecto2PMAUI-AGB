@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            x:Class="InterfazTicketsApp.Views.EventDetailPage"
-            Title="Detalles del Evento"
-            IconImageSource="detalles.jpg">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterfazTicketsApp.Views.EventDetailPage"
+             Title="Detalles del Evento"
+             IconImageSource="detalles.jpg">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10" Spacing="15">
@@ -12,8 +12,8 @@
                 <Label Text="{Binding EventDate}" FontSize="18" />
                 <Label Text="{Binding EventLocation}" FontSize="18" />
                 <Label Text="{Binding EventDescription}" FontSize="16" TextColor="{StaticResource SecondaryTextColor}" />
-                <Button Text="Comprar Tickets" Command="{Binding BuyTicketsCommand}" />
-                <Button Text="Compartir Evento" Command="{Binding ShareEventCommand}" />
+                <Button x:Name="BuyTicketsButton" Text="Comprar Tickets" Command="{Binding BuyTicketsCommand}" />
+                <Button x:Name="ShareEventButton" Text="Compartir Evento" Command="{Binding ShareEventCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

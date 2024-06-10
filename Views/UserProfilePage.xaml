@@ -15,7 +15,7 @@
                 <Entry Placeholder="Número de teléfono" Text="{Binding UserPhone}" />
 
                 <!-- Botón de Guardar -->
-                <Button Text="Guardar cambios" Command="{Binding SaveProfileCommand}" />
+                <Button x:Name="SaveButton" Text="Guardar cambios" Command="{Binding SaveProfileCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -12,7 +12,17 @@ namespace InterfazTicketsApp.ViewModels
     public class CommentsViewModel : BindableObject
     {
         public ObservableCollection<Comment> Comments { get; set; }
-        public string NewComment { get; set; }
+        private string _newComment;
+        public string NewComment
+        {
+            get => _newComment;
+            set
+            {
+                _newComment = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand SubmitCommentCommand { get; set; }
         public ICommand LoadCommentsCommand { get; set; }
         public ICommand SaveCommentsCommand { get; set; }
@@ -36,7 +46,6 @@ namespace InterfazTicketsApp.ViewModels
             {
                 Comments.Add(new Comment { UserName = "Usuario Actual", CommentText = NewComment });
                 NewComment = string.Empty;
-                OnPropertyChanged(nameof(NewComment));
             }
         }
 
@@ -65,7 +74,6 @@ namespace InterfazTicketsApp.ViewModels
             }
             catch (Exception ex)
             {
-                // Manejar excepción
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar comentarios: {ex.Message}", "OK");
             }
         }
@@ -88,7 +96,6 @@ namespace InterfazTicketsApp.ViewModels
             }
             catch (Exception ex)
             {
-                // Manejar excepción
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al guardar comentarios: {ex.Message}", "OK");
             }
         }

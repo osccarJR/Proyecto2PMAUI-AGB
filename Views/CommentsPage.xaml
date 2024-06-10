@@ -7,10 +7,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20" Spacing="15">
-                <!-- Título -->
                 <Label Text="Comentarios y Valoraciones" Style="{StaticResource TitleLabel}"/>
-
-                <!-- Lista de Comentarios -->
                 <ListView x:Name="CommentsListView" ItemsSource="{Binding Comments}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -25,14 +22,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
-                <!-- Entrada de Nuevo Comentario -->
                 <Entry Placeholder="Escribe un comentario..." Text="{Binding NewComment}" />
-
-                <!-- Botón de Enviar -->
                 <Button x:Name="SubmitButton" Text="Enviar" Command="{Binding SubmitCommentCommand}" />
-
-                <!-- Botones para Cargar y Guardar Comentarios -->
                 <Button x:Name="LoadButton" Text="Cargar Comentarios" Command="{Binding LoadCommentsCommand}" />
                 <Button x:Name="SaveButton" Text="Guardar Comentarios" Command="{Binding SaveCommentsCommand}" />
             </StackLayout>

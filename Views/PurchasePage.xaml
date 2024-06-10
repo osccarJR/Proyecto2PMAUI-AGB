@@ -25,7 +25,7 @@
                 <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" />
 
                 <!-- Botón de Compra -->
-                <Button Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" />
+                <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
