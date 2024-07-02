@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:InterfazTicketsApp.Behaviors"
              x:Class="InterfazTicketsApp.Views.PurchasePage"
              Title="Compra de Tickets"
              IconImageSource="compra.jpg">
@@ -13,19 +14,36 @@
                 <!-- Selección de Evento -->
                 <Picker Title="Seleccione el evento" ItemsSource="{Binding Events}" ItemDisplayBinding="{Binding EventName}" SelectedItem="{Binding SelectedEvent}"/>
 
-                <!-- Información del Evento -->
-                <StackLayout BackgroundColor="{StaticResource CardBackgroundColor}" Padding="10">
-                    <Label x:Name="EventNameLabel" Text="{Binding SelectedEvent.EventName}" FontSize="22" TextColor="{StaticResource TextColor}" />
-                    <Label x:Name="EventDateLabel" Text="{Binding SelectedEvent.EventDate, StringFormat='dd/MM/yyyy'}" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
-                    <Label x:Name="EventLocationLabel" Text="{Binding SelectedEvent.EventLocation}" FontSize="18" TextColor="{StaticResource SecondaryTextColor}" />
-                </StackLayout>
+                <!-- Selección de Categoría de Ticket -->
+                <Picker Title="Seleccione la categoría" ItemsSource="{Binding TicketCategories}" SelectedItem="{Binding SelectedCategory}"/>
 
-                <!-- Formulario de Compra -->
+                <!-- Cantidad de Tickets -->
                 <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" Text="{Binding TicketQuantity}"/>
+
+                <!-- Monto Total -->
+                <Label Text="{Binding TotalAmount, StringFormat='Monto total: ${0:F2}'}" FontSize="18" FontAttributes="Bold" />
+
+                <!-- Información del Titular -->
+                <Entry x:Name="HolderNameEntry" Placeholder="Nombre del titular" Text="{Binding HolderName}" />
+                <Entry x:Name="HolderIdEntry" Placeholder="Número de cédula" Keyboard="Numeric" Text="{Binding HolderId}">
+                    <Entry.Behaviors>
+                        <local:ComportamientoNumerico MaxLength="10" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <!-- Información de la Tarjeta -->
                 <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" Text="{Binding CardName}"/>
                 <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" Text="{Binding CardNumber}"/>
-                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" Text="{Binding CardExpiry}"/>
-                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" Text="{Binding CardCVC}"/>
+                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" Text="{Binding CardExpiry}">
+                    <Entry.Behaviors>
+                        <local:ComportamientoExpira />
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" Text="{Binding CardCVC}">
+                    <Entry.Behaviors>
+                        <local:ComportamientoNumerico MaxLength="5" />
+                    </Entry.Behaviors>
+                </Entry>
 
                 <!-- Botón de Compra -->
                 <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" IsEnabled="{Binding IsPurchaseEnabled}"/>

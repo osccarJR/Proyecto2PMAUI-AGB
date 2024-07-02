@@ -5,10 +5,15 @@
        x:Class="InterfazTicketsApp.AppShell">
 
     <TabBar>
-        <ShellContent Title="Buscar" Icon="buscar.jpg" ContentTemplate="{DataTemplate local:MainPage}" />
-        <ShellContent Title="Detalles" Icon="detalles.jpg" ContentTemplate="{DataTemplate local:EventDetailPage}" />
-        <ShellContent Title="Compra" Icon="compra.jpg" ContentTemplate="{DataTemplate local:PurchasePage}" />
-        <ShellContent Title="Perfil" Icon="perfil.jpg" ContentTemplate="{DataTemplate local:UserProfilePage}" />
+        <ShellContent Title="Buscar" Icon="buscar.jpg" ContentTemplate="{DataTemplate local:MainPage}" Route="Buscar"/>
+        <ShellContent Title="Detalles" Icon="detalles.jpg" ContentTemplate="{DataTemplate local:EventDetailPage}" Route="Detalles"/>
+        <ShellContent Title="Compra" Icon="compra.jpg" ContentTemplate="{DataTemplate local:PurchasePage}" Route="Compra"/>
+        <ShellContent Title="Detalle" Icon="perfil.jpg" ContentTemplate="{DataTemplate local:UserProfilePage}" />
         <ShellContent Title="Comentarios" Icon="comentario.jpg" ContentTemplate="{DataTemplate local:CommentsPage}" />
     </TabBar>
+
+    <!-- Define the route for the EventDetailPage -->
+    <ShellItem Route="Detalles">
+        <ShellContent ContentTemplate="{DataTemplate local:EventDetailPage}" />
+    </ShellItem>
 </Shell>

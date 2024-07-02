@@ -8,7 +8,8 @@ namespace InterfazTicketsApp.Views
         public PurchasePage()
         {
             InitializeComponent();
-            BindingContext = new PurchaseViewModel();
+            BindingContext = new PurchaseViewModel(App.ServicioCompra);
         }
     }
 }
+

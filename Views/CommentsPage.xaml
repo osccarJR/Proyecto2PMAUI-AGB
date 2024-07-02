@@ -22,6 +22,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <Entry Placeholder="Número de Identificación" Text="{Binding IdentificationNumber}" Keyboard="Numeric" />
                 <Entry Placeholder="Escribe un comentario..." Text="{Binding NewComment}" />
                 <Button x:Name="SubmitButton" Text="Enviar" Command="{Binding SubmitCommentCommand}" />
                 <Button x:Name="LoadButton" Text="Cargar Comentarios" Command="{Binding LoadCommentsCommand}" />
@@ -30,3 +31,4 @@
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
+

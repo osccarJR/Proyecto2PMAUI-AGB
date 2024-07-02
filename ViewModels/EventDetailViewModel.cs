@@ -1,44 +1,96 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Microsoft.Maui.Controls;
-using InterfazTicketsApp.Models;
 
 namespace InterfazTicketsApp.ViewModels
 {
     public class EventDetailViewModel : BindableObject
     {
-        public ObservableCollection<DetailEvent> Events { get; set; }
-        public ICommand ShareEventCommand { get; }
+        private string _eventName;
+        private string _eventImage;
+        private DateTime _eventDate;
+        private string _eventLocation;
+        private string _eventDescription;
+        private string _localidadesImage;
+
+        public string EventName
+        {
+            get => _eventName;
+            set
+            {
+                _eventName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EventImage
+        {
+            get => _eventImage;
+            set
+            {
+                _eventImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime EventDate
+        {
+            get => _eventDate;
+            set
+            {
+                _eventDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EventLocation
+        {
+            get => _eventLocation;
+            set
+            {
+                _eventLocation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EventDescription
+        {
+            get => _eventDescription;
+            set
+            {
+                _eventDescription = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LocalidadesImage
+        {
+            get => _localidadesImage;
+            set
+            {
+                _localidadesImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand BuyTicketsCommand { get; }
+        public ICommand GoBackCommand { get; }
 
         public EventDetailViewModel()
         {
-            Events = new ObservableCollection<DetailEvent>
-            {
-                new DetailEvent
-                {
-                    EventName = "Concierto de Rock",
-                    EventImage = "rock.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Teatro Nacional, Madrid",
-                    EventDescription = "Disfruta de una noche mágica con la mejor música rock interpretada por Van Halen."
-                },
-                new DetailEvent
-                {
-                    EventName = "Festival de Jazz",
-                    EventImage = "jazz.png",
-                    EventDate = DateTime.Now.AddMonths(2),
-                    EventLocation = "Parque Central, Barcelona",
-                    EventDescription = "Un festival con los mejores exponentes del jazz mundial."
-                }
-            };
-
-            ShareEventCommand = new Command(async () => await OnShareEventAsync());
+            BuyTicketsCommand = new Command(OnBuyTickets);
+            GoBackCommand = new Command(OnGoBack);
         }
 
-        private async Task OnShareEventAsync()
+        private async void OnBuyTickets()
         {
-            await Application.Current.MainPage.DisplayAlert("Compartir", "Evento compartido exitosamente.", "OK");
+            // Navegar a la pestaña de Compra
+            await Shell.Current.GoToAsync("//Compra");
+        }
+
+        private async void OnGoBack()
+        {
+            // Navegar a la pestaña de Buscar
+            await Shell.Current.GoToAsync("//Buscar");
         }
     }
 }

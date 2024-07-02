@@ -1,71 +1,101 @@
 ﻿using System.Windows.Input;
+using InterfazTicketsApp.Services;
 using Microsoft.Maui.Controls;
+using System.Threading.Tasks;
 
 namespace InterfazTicketsApp.ViewModels
 {
     public class UserProfileViewModel : BindableObject
     {
-        private string _userName;
-        private string _userEmail;
-        private string _userPhone;
+        private readonly ServicioCompra _servicioCompra;
+        private string _orderNumber;
+        private string _identificationNumber;
+        private string _orderDetails;
+        private bool _isOrderDetailsVisible;
 
-        public string UserName
+        public string OrderNumber
         {
-            get => _userName;
+            get => _orderNumber;
             set
             {
-                if (_userName != value)
+                if (_orderNumber != value)
                 {
-                    _userName = value;
+                    _orderNumber = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string UserEmail
+        public string IdentificationNumber
         {
-            get => _userEmail;
+            get => _identificationNumber;
             set
             {
-                if (_userEmail != value)
+                if (_identificationNumber != value)
                 {
-                    _userEmail = value;
+                    _identificationNumber = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string UserPhone
+        public string OrderDetails
         {
-            get => _userPhone;
-            set
+            get => _orderDetails;
+            private set
             {
-                if (_userPhone != value)
+                if (_orderDetails != value)
                 {
-                    _userPhone = value;
+                    _orderDetails = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public ICommand SaveProfileCommand { get; }
+        public bool IsOrderDetailsVisible
+        {
+            get => _isOrderDetailsVisible;
+            private set
+            {
+                if (_isOrderDetailsVisible != value)
+                {
+                    _isOrderDetailsVisible = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ICommand FetchOrderDetailsCommand { get; }
 
         public UserProfileViewModel()
         {
-            SaveProfileCommand = new Command(OnSaveProfile);
+            _servicioCompra = App.ServicioCompra;
+            FetchOrderDetailsCommand = new Command(async () => await FetchOrderDetailsAsync());
         }
 
-        private void OnSaveProfile()
+        private async Task FetchOrderDetailsAsync()
         {
-            // Validaciones básicas
-            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(UserEmail) || string.IsNullOrWhiteSpace(UserPhone))
+            if (string.IsNullOrWhiteSpace(OrderNumber) || string.IsNullOrWhiteSpace(IdentificationNumber))
             {
-                Application.Current.MainPage.DisplayAlert("Error", "Por favor, complete todos los campos.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Por favor, ingrese ambos el número de orden y el número de identificación.", "OK");
                 return;
             }
 
-            // Simular guardado de perfil
-            Application.Current.MainPage.DisplayAlert("Perfil Guardado", "¡Los cambios han sido guardados exitosamente!", "OK");
+            var orderDetails = await _servicioCompra.GetOrderDetailsAsync(int.Parse(OrderNumber), IdentificationNumber);
+            if (orderDetails != null)
+            {
+                OrderDetails = orderDetails;
+                IsOrderDetailsVisible = true;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "No se encontraron detalles para la orden proporcionada.", "OK");
+                IsOrderDetailsVisible = false;
+            }
+
+            // Limpiar los campos después de la consulta
+            OrderNumber = string.Empty;
+            IdentificationNumber = string.Empty;
         }
     }
 }

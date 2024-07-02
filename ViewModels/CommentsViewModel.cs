@@ -1,18 +1,22 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
 using InterfazTicketsApp.Models;
+using InterfazTicketsApp.Services;
 
 namespace InterfazTicketsApp.ViewModels
 {
     public class CommentsViewModel : BindableObject
     {
-        public ObservableCollection<Comment> Comments { get; set; }
+        private readonly ServicioCompra _servicioCompra;
         private string _newComment;
+        private string _identificationNumber;
+        private string _userName;
+
+        public ObservableCollection<Comment> Comments { get; set; }
+
         public string NewComment
         {
             get => _newComment;
@@ -23,51 +27,76 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
+        public string IdentificationNumber
+        {
+            get => _identificationNumber;
+            set
+            {
+                _identificationNumber = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand SubmitCommentCommand { get; set; }
         public ICommand LoadCommentsCommand { get; set; }
         public ICommand SaveCommentsCommand { get; set; }
 
         public CommentsViewModel()
         {
-            Comments = new ObservableCollection<Comment>
-            {
-                new Comment { UserName = "Juan Pérez", CommentText = "¡Excelente evento!" },
-                new Comment { UserName = "María Gómez", CommentText = "Me encantó la organización." }
-            };
+            _servicioCompra = App.ServicioCompra;
+            Comments = new ObservableCollection<Comment>();
 
-            SubmitCommentCommand = new Command(OnSubmitComment);
+            SubmitCommentCommand = new Command(async () => await OnSubmitCommentAsync());
             LoadCommentsCommand = new Command(async () => await LoadCommentsAsync());
             SaveCommentsCommand = new Command(async () => await SaveCommentsAsync());
+
+            // Cargar comentarios al iniciar
+            Task.Run(async () => await LoadCommentsAsync());
         }
 
-        private void OnSubmitComment()
+        private async Task OnSubmitCommentAsync()
         {
+            if (string.IsNullOrWhiteSpace(IdentificationNumber))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Por favor, ingrese su número de identificación.", "OK");
+                return;
+            }
+
+            _userName = await _servicioCompra.GetUserNameByIdAsync(IdentificationNumber);
+
+            if (_userName == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "No se encontró un usuario con ese número de identificación.", "OK");
+                return;
+            }
+
             if (!string.IsNullOrWhiteSpace(NewComment))
             {
-                Comments.Add(new Comment { UserName = "Usuario Actual", CommentText = NewComment });
+                var comment = new Comment { UserName = _userName, CommentText = NewComment };
+                Comments.Add(comment);
+                await SaveCommentsAsync();
                 NewComment = string.Empty;
+                IdentificationNumber = string.Empty;
             }
         }
 
         private async Task LoadCommentsAsync()
         {
+            // Lógica para cargar comentarios desde almacenamiento (puede ser un archivo o base de datos)
+            // Ejemplo: leer desde un archivo de texto
             try
             {
-                var result = await FilePicker.Default.PickAsync();
-                if (result != null)
+                var filePath = Path.Combine(FileSystem.AppDataDirectory, "comments.txt");
+                if (File.Exists(filePath))
                 {
-                    using (var stream = await result.OpenReadAsync())
-                    using (var reader = new StreamReader(stream))
+                    var lines = await File.ReadAllLinesAsync(filePath);
+                    Comments.Clear();
+                    foreach (var line in lines)
                     {
-                        var fileContent = await reader.ReadToEndAsync();
-                        var comments = fileContent.Split('\n');
-                        Comments.Clear();
-                        foreach (var comment in comments)
+                        var parts = line.Split('|');
+                        if (parts.Length == 2)
                         {
-                            if (!string.IsNullOrWhiteSpace(comment))
-                            {
-                                Comments.Add(new Comment { UserName = "Usuario", CommentText = comment });
-                            }
+                            Comments.Add(new Comment { UserName = parts[0], CommentText = parts[1] });
                         }
                     }
                 }
@@ -80,19 +109,17 @@ namespace InterfazTicketsApp.ViewModels
 
         private async Task SaveCommentsAsync()
         {
+            // Lógica para guardar comentarios en almacenamiento (puede ser un archivo o base de datos)
+            // Ejemplo: escribir en un archivo de texto
             try
             {
-                string fileName = Path.Combine(FileSystem.CacheDirectory, "comments.txt");
-                using (var stream = File.Create(fileName))
-                using (var writer = new StreamWriter(stream))
+                var filePath = Path.Combine(FileSystem.AppDataDirectory, "comments.txt");
+                var lines = new List<string>();
+                foreach (var comment in Comments)
                 {
-                    foreach (var comment in Comments)
-                    {
-                        await writer.WriteLineAsync(comment.CommentText);
-                    }
+                    lines.Add($"{comment.UserName}|{comment.CommentText}");
                 }
-
-                await Application.Current.MainPage.DisplayAlert("Guardado", "Comentarios guardados exitosamente.", "OK");
+                await File.WriteAllLinesAsync(filePath, lines);
             }
             catch (Exception ex)
             {
@@ -101,3 +128,4 @@ namespace InterfazTicketsApp.ViewModels
         }
     }
 }
+

@@ -59,16 +59,26 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\buscar.jpg" />
 	  <None Remove="Resources\Images\enviar.jpg" />
+	  <None Remove="Resources\Images\futbol.jpg" />
+	  <None Remove="Resources\Images\hamlet.jpg" />
 	  <None Remove="Resources\Images\interfaz.jpg" />
 	  <None Remove="Resources\Images\jazz.png" />
+	  <None Remove="Resources\Images\localidades1.jpg" />
+	  <None Remove="Resources\Images\localidades2.jpg" />
+	  <None Remove="Resources\Images\localidades3.jpg" />
+	  <None Remove="Resources\Images\maraton.jpg" />
 	  <None Remove="Resources\Images\perfil.jpg" />
+	  <None Remove="Resources\Images\rey_leon.jpeg" />
 	  <None Remove="Resources\Images\rock.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 	</ItemGroup>
 
 	<ItemGroup>

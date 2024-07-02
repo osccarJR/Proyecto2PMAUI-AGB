@@ -11,6 +11,7 @@
                 <Picker Title="Seleccione" SelectedItem="{Binding SelectedCategory}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
+                            <x:String>Ver Todos</x:String>
                             <x:String>Conciertos</x:String>
                             <x:String>Deportes</x:String>
                             <x:String>Teatro</x:String>
@@ -18,11 +19,18 @@
                     </Picker.ItemsSource>
                 </Picker>
                 <DatePicker Date="{Binding SelectedDate}" />
-                <Button x:Name="SearchButton" Text="Buscar" Command="{Binding SearchCommand}" />
-                <ListView x:Name="EventListView" ItemsSource="{Binding Events}">
+                <ListView x:Name="EventListView" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding EventName}" Detail="{Binding EventDate}" />
+                            <ViewCell>
+                                <StackLayout Padding="10">
+                                    <Label Text="{Binding EventName}" FontSize="18" FontAttributes="Bold" />
+                                    <Image Source="{Binding EventImage}" HeightRequest="200" />
+                                    <Label Text="{Binding EventDate, StringFormat='{0:dd/MM/yyyy}'}" FontSize="16" />
+                                    <Label Text="{Binding EventLocation}" FontSize="16" />
+                                    <Label Text="{Binding EventDescription}" FontSize="14" TextColor="Gray" />
+                                </StackLayout>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
