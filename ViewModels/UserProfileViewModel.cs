@@ -7,7 +7,7 @@ namespace InterfazTicketsApp.ViewModels
 {
     public class UserProfileViewModel : BindableObject
     {
-        private readonly ServicioCompra _servicioCompra;
+        private readonly IApiService _apiService;
         private string _orderNumber;
         private string _identificationNumber;
         private string _orderDetails;
@@ -69,7 +69,12 @@ namespace InterfazTicketsApp.ViewModels
 
         public UserProfileViewModel()
         {
-            _servicioCompra = App.ServicioCompra;
+            // Constructor sin parámetros necesario para la instanciación desde XAML
+        }
+
+        public UserProfileViewModel(IApiService apiService)
+        {
+            _apiService = apiService;
             FetchOrderDetailsCommand = new Command(async () => await FetchOrderDetailsAsync());
         }
 
@@ -81,7 +86,7 @@ namespace InterfazTicketsApp.ViewModels
                 return;
             }
 
-            var orderDetails = await _servicioCompra.GetOrderDetailsAsync(int.Parse(OrderNumber), IdentificationNumber);
+            var orderDetails = await _apiService.GetOrderDetailsAsync(int.Parse(OrderNumber), IdentificationNumber);
             if (orderDetails != null)
             {
                 OrderDetails = orderDetails;
@@ -93,11 +98,8 @@ namespace InterfazTicketsApp.ViewModels
                 IsOrderDetailsVisible = false;
             }
 
-            // Limpiar los campos después de la consulta
             OrderNumber = string.Empty;
             IdentificationNumber = string.Empty;
         }
     }
 }
-
-

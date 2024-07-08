@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls;
 using InterfazTicketsApp.ViewModels;
+using InterfazTicketsApp.Services;
 
 namespace InterfazTicketsApp.Views
 {
@@ -8,7 +9,7 @@ namespace InterfazTicketsApp.Views
         public UserProfilePage()
         {
             InitializeComponent();
-            BindingContext = new UserProfileViewModel();
+            BindingContext = new UserProfileViewModel(App.ApiService);
         }
     }
 }

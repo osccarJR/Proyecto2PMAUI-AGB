@@ -1,23 +1,28 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using InterfazTicketsApp.Services;
-using InterfazTicketsApp.ViewModels;
 
 namespace InterfazTicketsApp
 {
     public partial class App : Application
     {
-        public static ServicioCompra ServicioCompra { get; private set; }
+        public static IApiService ApiService { get; private set; }
 
         public App()
         {
             InitializeComponent();
 
-            // Cambia esto a tu cadena de conexión real
-            string connectionString = "Server=KEKIPC;Database=TicketsDB;Trusted_Connection=True;TrustServerCertificate=True;";
+            MainPage = new AppShell();
+        }
 
-            ServicioCompra = new ServicioCompra(connectionString);
+        public App(IApiService apiService)
+        {
+            InitializeComponent();
 
             MainPage = new AppShell();
+            ApiService = apiService;
         }
     }
 }

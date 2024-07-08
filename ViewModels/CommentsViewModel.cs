@@ -10,7 +10,7 @@ namespace InterfazTicketsApp.ViewModels
 {
     public class CommentsViewModel : BindableObject
     {
-        private readonly ServicioCompra _servicioCompra;
+        private readonly IApiService _apiService;
         private string _newComment;
         private string _identificationNumber;
         private string _userName;
@@ -41,9 +41,9 @@ namespace InterfazTicketsApp.ViewModels
         public ICommand LoadCommentsCommand { get; set; }
         public ICommand SaveCommentsCommand { get; set; }
 
-        public CommentsViewModel()
+        public CommentsViewModel(IApiService apiService)
         {
-            _servicioCompra = App.ServicioCompra;
+            _apiService = apiService;
             Comments = new ObservableCollection<Comment>();
 
             SubmitCommentCommand = new Command(async () => await OnSubmitCommentAsync());
@@ -56,49 +56,46 @@ namespace InterfazTicketsApp.ViewModels
 
         private async Task OnSubmitCommentAsync()
         {
-            if (string.IsNullOrWhiteSpace(IdentificationNumber))
+            try
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Por favor, ingrese su número de identificación.", "OK");
-                return;
+                if (string.IsNullOrWhiteSpace(IdentificationNumber))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Por favor, ingrese su número de identificación.", "OK");
+                    return;
+                }
+
+                var userName = await _apiService.GetUserNameByIdAsync(IdentificationNumber);
+
+                if (userName == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se encontró un usuario con ese número de identificación.", "OK");
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(NewComment))
+                {
+                    var comment = new Comment { UserName = userName, CommentText = NewComment };
+                    Comments.Add(comment);
+                    await SaveCommentsAsync();
+                    NewComment = string.Empty;
+                    IdentificationNumber = string.Empty;
+                }
             }
-
-            _userName = await _servicioCompra.GetUserNameByIdAsync(IdentificationNumber);
-
-            if (_userName == null)
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "No se encontró un usuario con ese número de identificación.", "OK");
-                return;
-            }
-
-            if (!string.IsNullOrWhiteSpace(NewComment))
-            {
-                var comment = new Comment { UserName = _userName, CommentText = NewComment };
-                Comments.Add(comment);
-                await SaveCommentsAsync();
-                NewComment = string.Empty;
-                IdentificationNumber = string.Empty;
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al enviar el comentario: {ex.Message}", "OK");
             }
         }
 
         private async Task LoadCommentsAsync()
         {
-            // Lógica para cargar comentarios desde almacenamiento (puede ser un archivo o base de datos)
-            // Ejemplo: leer desde un archivo de texto
             try
             {
-                var filePath = Path.Combine(FileSystem.AppDataDirectory, "comments.txt");
-                if (File.Exists(filePath))
+                var comments = await _apiService.GetCommentsAsync();
+                Comments.Clear();
+                foreach (var comment in comments)
                 {
-                    var lines = await File.ReadAllLinesAsync(filePath);
-                    Comments.Clear();
-                    foreach (var line in lines)
-                    {
-                        var parts = line.Split('|');
-                        if (parts.Length == 2)
-                        {
-                            Comments.Add(new Comment { UserName = parts[0], CommentText = parts[1] });
-                        }
-                    }
+                    Comments.Add(comment);
                 }
             }
             catch (Exception ex)
@@ -109,17 +106,9 @@ namespace InterfazTicketsApp.ViewModels
 
         private async Task SaveCommentsAsync()
         {
-            // Lógica para guardar comentarios en almacenamiento (puede ser un archivo o base de datos)
-            // Ejemplo: escribir en un archivo de texto
             try
             {
-                var filePath = Path.Combine(FileSystem.AppDataDirectory, "comments.txt");
-                var lines = new List<string>();
-                foreach (var comment in Comments)
-                {
-                    lines.Add($"{comment.UserName}|{comment.CommentText}");
-                }
-                await File.WriteAllLinesAsync(filePath, lines);
+                await _apiService.SaveCommentsAsync(new List<Comment>(Comments));
             }
             catch (Exception ex)
             {
@@ -128,4 +117,3 @@ namespace InterfazTicketsApp.ViewModels
         }
     }
 }
-

@@ -150,9 +150,7 @@ namespace InterfazTicketsApp.ViewModels
 
         public async void NavigateToDetails(DetailEvent selectedEvent)
         {
-            // Navegar a la página de detalles pasando parámetros
             await Shell.Current.GoToAsync($"///Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate}&localidadesImage={selectedEvent.LocalidadesImage}");
         }
     }
 }
-

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
@@ -10,7 +9,7 @@ namespace InterfazTicketsApp.ViewModels
 {
     public class PurchaseViewModel : BindableObject
     {
-        private readonly ServicioCompra _servicioCompra;
+        private readonly IApiService _apiService;
 
         private string _ticketQuantity;
         private string _cardName;
@@ -153,9 +152,9 @@ namespace InterfazTicketsApp.ViewModels
             !string.IsNullOrWhiteSpace(HolderId) &&
             HolderId.Length == 10;
 
-        public PurchaseViewModel(ServicioCompra servicioCompra)
+        public PurchaseViewModel(IApiService apiService)
         {
-            _servicioCompra = servicioCompra;
+            _apiService = apiService;
             ConfirmPurchaseCommand = new Command(OnConfirmPurchase);
             Events = new ObservableCollection<DetailEvent>
             {
@@ -277,11 +276,9 @@ namespace InterfazTicketsApp.ViewModels
 
         private async void OnConfirmPurchase()
         {
-            // Lógica de compra de tickets
-            int purchaseId = await _servicioCompra.SavePurchaseAsync(HolderName, HolderId, int.Parse(TicketQuantity), SelectedCategory, (decimal)TotalAmount, SelectedEvent.EventName, SelectedEvent.EventLocation, SelectedEvent.EventDate);
+            int purchaseId = await _apiService.SavePurchaseAsync(HolderName, HolderId, int.Parse(TicketQuantity), SelectedCategory, (decimal)TotalAmount, SelectedEvent.EventName, SelectedEvent.EventLocation, SelectedEvent.EventDate);
             await Application.Current.MainPage.DisplayAlert("Compra Exitosa", $"Has comprado {TicketQuantity} tickets por un total de ${TotalAmount}. Número de orden: {purchaseId}", "OK");
 
-            // Limpiar los campos
             TicketQuantity = string.Empty;
             CardName = string.Empty;
             CardNumber = string.Empty;
@@ -292,9 +289,6 @@ namespace InterfazTicketsApp.ViewModels
             HolderName = string.Empty;
             HolderId = string.Empty;
             TotalAmount = 0;
-
-
         }
     }
 }
-

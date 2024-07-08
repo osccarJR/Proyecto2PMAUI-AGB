@@ -83,15 +83,12 @@ namespace InterfazTicketsApp.ViewModels
 
         private async void OnBuyTickets()
         {
-            // Navegar a la pestaña de Compra
             await Shell.Current.GoToAsync("//Compra");
         }
 
         private async void OnGoBack()
         {
-            // Navegar a la pestaña de Buscar
             await Shell.Current.GoToAsync("//Buscar");
         }
     }
 }
-

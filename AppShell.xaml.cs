@@ -1,5 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
-using InterfazTicketsApp.ViewModels;
+using InterfazTicketsApp.Views;
 
 namespace InterfazTicketsApp
 {
@@ -8,8 +8,7 @@ namespace InterfazTicketsApp
         public AppShell()
         {
             InitializeComponent();
-
-            BindingContext = new PurchaseViewModel(App.ServicioCompra);
+            Routing.RegisterRoute(nameof(EventDetailPage), typeof(EventDetailPage));
         }
     }
 }

@@ -14,11 +14,9 @@
                 <Label Text="{Binding EventLocation}" FontSize="18" />
                 <Label Text="{Binding EventDescription}" FontSize="16" TextColor="Gray" />
                 <Image Source="{Binding LocalidadesImage}" HeightRequest="200" />
-                <!-- Imagen dinámica de localidades -->
                 <Button Text="Comprar" Command="{Binding BuyTicketsCommand}" />
                 <Button Text="Atrás" Command="{Binding GoBackCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
-

@@ -8,22 +8,16 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20" Spacing="15">
-                <!-- Título -->
                 <Label Text="Compra de Tickets" Style="{StaticResource TitleLabel}" HorizontalOptions="Center"/>
 
-                <!-- Selección de Evento -->
                 <Picker Title="Seleccione el evento" ItemsSource="{Binding Events}" ItemDisplayBinding="{Binding EventName}" SelectedItem="{Binding SelectedEvent}"/>
 
-                <!-- Selección de Categoría de Ticket -->
                 <Picker Title="Seleccione la categoría" ItemsSource="{Binding TicketCategories}" SelectedItem="{Binding SelectedCategory}"/>
 
-                <!-- Cantidad de Tickets -->
                 <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" Text="{Binding TicketQuantity}"/>
 
-                <!-- Monto Total -->
                 <Label Text="{Binding TotalAmount, StringFormat='Monto total: ${0:F2}'}" FontSize="18" FontAttributes="Bold" />
 
-                <!-- Información del Titular -->
                 <Entry x:Name="HolderNameEntry" Placeholder="Nombre del titular" Text="{Binding HolderName}" />
                 <Entry x:Name="HolderIdEntry" Placeholder="Número de cédula" Keyboard="Numeric" Text="{Binding HolderId}">
                     <Entry.Behaviors>
@@ -31,7 +25,6 @@
                     </Entry.Behaviors>
                 </Entry>
 
-                <!-- Información de la Tarjeta -->
                 <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" Text="{Binding CardName}"/>
                 <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" Text="{Binding CardNumber}"/>
                 <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" Text="{Binding CardExpiry}">
@@ -45,7 +38,6 @@
                     </Entry.Behaviors>
                 </Entry>
 
-                <!-- Botón de Compra -->
                 <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" IsEnabled="{Binding IsPurchaseEnabled}"/>
             </StackLayout>
         </ScrollView>

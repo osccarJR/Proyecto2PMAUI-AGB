@@ -10,17 +10,12 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20" Spacing="15">
-                <!-- Campo para ingresar número de orden -->
                 <Entry Placeholder="Número de Orden" Text="{Binding OrderNumber}" Keyboard="Numeric" />
-                <!-- Campo para ingresar número de identificación -->
                 <Entry Placeholder="Número de Identificación" Text="{Binding IdentificationNumber}" Keyboard="Numeric" />
-                <!-- Botón para consultar detalles de orden -->
                 <Button Text="Consultar Detalle de Orden" Command="{Binding FetchOrderDetailsCommand}" />
-                <!-- Mostrar detalles de la orden -->
                 <Label Text="Detalles de la Orden:" FontAttributes="Bold" IsVisible="{Binding IsOrderDetailsVisible}" />
                 <Label Text="{Binding OrderDetails}" IsVisible="{Binding IsOrderDetailsVisible}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
-
