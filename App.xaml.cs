@@ -31,8 +31,3 @@ namespace InterfazTicketsApp
         }
     }
 }
-
-
-
-
-

@@ -1,9 +1,10 @@
-namespace InterfazTicketsApp.Views;
-
-public partial class WeatherRecordsPage : ContentPage
+namespace InterfazTicketsApp.Views
 {
-    public WeatherRecordsPage()
+    public partial class WeatherRecordsPage : ContentPage
     {
-        InitializeComponent();
+        public WeatherRecordsPage()
+        {
+            InitializeComponent();
+        }
     }
 }
