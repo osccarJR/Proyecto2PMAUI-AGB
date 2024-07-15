@@ -69,10 +69,12 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
+
         public async void NavigateToDetails(EventoDetalle selectedEvent)
         {
-            var route = $"Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate:yyyy-MM-dd}&ticketPrice={selectedEvent.TicketPrice}";
+            var route = $"///Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate:yyyy-MM-dd}&ticketPrice={selectedEvent.TicketPrice}";
             await Shell.Current.GoToAsync(route);
         }
+
     }
 }
