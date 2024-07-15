@@ -10,31 +10,25 @@ namespace InterfazTicketsApp.ViewModels
     public class PurchaseViewModel : BindableObject
     {
         private readonly IApiService _apiService;
-
         private string _ticketQuantity;
-        private string _cardName;
-        private string _cardNumber;
-        private string _cardExpiry;
-        private string _cardCVC;
-        private DetailEvent _selectedEvent;
-        private string _selectedCategory;
-        private double _totalAmount;
         private string _holderName;
         private string _holderId;
+        private string _creditCardNumber;
+        private string _cardCode;
+        private string _expirationDate;
+        private EventoDetalle _selectedEvent;
+        private double _totalAmount;
 
-        public ObservableCollection<DetailEvent> Events { get; set; }
-        public ObservableCollection<string> TicketCategories { get; set; }
+        public ObservableCollection<EventoDetalle> Events { get; }
 
-        public DetailEvent SelectedEvent
+        public EventoDetalle SelectedEvent
         {
             get => _selectedEvent;
             set
             {
                 _selectedEvent = value;
                 OnPropertyChanged();
-                UpdateCategories();
                 CalculateTotalAmount();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
             }
         }
 
@@ -46,51 +40,6 @@ namespace InterfazTicketsApp.ViewModels
                 _ticketQuantity = value;
                 OnPropertyChanged();
                 CalculateTotalAmount();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
-            }
-        }
-
-        public string CardName
-        {
-            get => _cardName;
-            set
-            {
-                _cardName = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
-            }
-        }
-
-        public string CardNumber
-        {
-            get => _cardNumber;
-            set
-            {
-                _cardNumber = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
-            }
-        }
-
-        public string CardExpiry
-        {
-            get => _cardExpiry;
-            set
-            {
-                _cardExpiry = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
-            }
-        }
-
-        public string CardCVC
-        {
-            get => _cardCVC;
-            set
-            {
-                _cardCVC = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
             }
         }
 
@@ -101,7 +50,6 @@ namespace InterfazTicketsApp.ViewModels
             {
                 _holderName = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
             }
         }
 
@@ -112,19 +60,36 @@ namespace InterfazTicketsApp.ViewModels
             {
                 _holderId = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
             }
         }
 
-        public string SelectedCategory
+        public string CreditCardNumber
         {
-            get => _selectedCategory;
+            get => _creditCardNumber;
             set
             {
-                _selectedCategory = value;
+                _creditCardNumber = value;
                 OnPropertyChanged();
-                CalculateTotalAmount();
-                OnPropertyChanged(nameof(IsPurchaseEnabled));
+            }
+        }
+
+        public string CardCode
+        {
+            get => _cardCode;
+            set
+            {
+                _cardCode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ExpirationDate
+        {
+            get => _expirationDate;
+            set
+            {
+                _expirationDate = value;
+                OnPropertyChanged();
             }
         }
 
@@ -139,134 +104,33 @@ namespace InterfazTicketsApp.ViewModels
         }
 
         public ICommand ConfirmPurchaseCommand { get; }
-
-        public bool IsPurchaseEnabled =>
-            SelectedEvent != null &&
-            !string.IsNullOrWhiteSpace(TicketQuantity) &&
-            !string.IsNullOrWhiteSpace(SelectedCategory) &&
-            !string.IsNullOrWhiteSpace(CardName) &&
-            !string.IsNullOrWhiteSpace(CardNumber) &&
-            !string.IsNullOrWhiteSpace(CardExpiry) &&
-            !string.IsNullOrWhiteSpace(CardCVC) &&
-            !string.IsNullOrWhiteSpace(HolderName) &&
-            !string.IsNullOrWhiteSpace(HolderId) &&
-            HolderId.Length == 10;
+        public ICommand NavigateBackCommand { get; }
 
         public PurchaseViewModel(IApiService apiService)
         {
             _apiService = apiService;
             ConfirmPurchaseCommand = new Command(OnConfirmPurchase);
-            Events = new ObservableCollection<DetailEvent>
-            {
-                new DetailEvent
-                {
-                    EventName = "Concierto de Rock",
-                    EventImage = "rock.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Teatro Nacional, Madrid",
-                    EventDescription = "Disfruta de una noche mágica con la mejor música rock interpretada por Van Halen.",
-                    Category = "Conciertos",
-                    LocalidadesImage = "localidades3.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Festival de Jazz",
-                    EventImage = "jazz.png",
-                    EventDate = DateTime.Now.AddMonths(2),
-                    EventLocation = "Parque Central, Barcelona",
-                    EventDescription = "Un festival con los mejores exponentes del jazz mundial.",
-                    Category = "Conciertos",
-                    LocalidadesImage = "localidades3.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Partido de Fútbol",
-                    EventImage = "futbol.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Estadio Santiago Bernabéu, Madrid",
-                    EventDescription = "Real Madrid vs Barcelona en un emocionante clásico.",
-                    Category = "Deportes",
-                    LocalidadesImage = "localidades1.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Maratón de Nueva York",
-                    EventImage = "maraton.jpg",
-                    EventDate = DateTime.Now.AddMonths(3),
-                    EventLocation = "Nueva York, USA",
-                    EventDescription = "Únete a miles de corredores en una de las maratones más famosas del mundo.",
-                    Category = "Deportes",
-                    LocalidadesImage = "localidades1.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Obra de Teatro 'Hamlet'",
-                    EventImage = "hamlet.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Teatro Real, Madrid",
-                    EventDescription = "Una interpretación moderna del clásico de Shakespeare.",
-                    Category = "Teatro",
-                    LocalidadesImage = "localidades2.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Musical 'El Rey León'",
-                    EventImage = "rey_leon.jpg",
-                    EventDate = DateTime.Now.AddMonths(2),
-                    EventLocation = "Teatro Lope de Vega, Madrid",
-                    EventDescription = "Disfruta del famoso musical con impresionantes escenografías y música inolvidable.",
-                    Category = "Teatro",
-                    LocalidadesImage = "localidades2.jpg"
-                }
-            };
+            NavigateBackCommand = new Command(OnNavigateBack);
+
+            Events = new ObservableCollection<EventoDetalle>();
+
+            LoadEvents();
         }
 
-        private void UpdateCategories()
+        private async void LoadEvents()
         {
-            TicketCategories = new ObservableCollection<string>();
-
-            if (SelectedEvent == null)
-                return;
-
-            switch (SelectedEvent.Category)
+            var events = await _apiService.GetDetailEventsAsync();
+            foreach (var eventItem in events)
             {
-                case "Conciertos":
-                    TicketCategories.Add("TOP BOX - $80");
-                    TicketCategories.Add("GOLDEN BOX - $70");
-                    TicketCategories.Add("BUTACAS - $50");
-                    TicketCategories.Add("PREFERENCIAS - $60");
-                    TicketCategories.Add("GENERAL FRONTAL - $40");
-                    break;
-                case "Teatro":
-                    TicketCategories.Add("LIVE TABLE - $100");
-                    TicketCategories.Add("MESAS VIP - $90");
-                    TicketCategories.Add("MESAS PREMIUM - $80");
-                    TicketCategories.Add("MESAS - $70");
-                    TicketCategories.Add("TRIBUNA - $60");
-                    TicketCategories.Add("PALCO VIP - $50");
-                    break;
-                case "Deportes":
-                    TicketCategories.Add("PALCO - $100");
-                    TicketCategories.Add("TRIBUNA-N - $90");
-                    TicketCategories.Add("TRIBUNA-S - $90");
-                    TicketCategories.Add("PREFERENCIAL - $70");
-                    TicketCategories.Add("GENERAL-N - $50");
-                    TicketCategories.Add("GENERAL-S - $50");
-                    break;
+                Events.Add(eventItem);
             }
-
-            OnPropertyChanged(nameof(TicketCategories));
         }
 
         private void CalculateTotalAmount()
         {
-            if (int.TryParse(TicketQuantity, out int quantity) && !string.IsNullOrWhiteSpace(SelectedCategory))
+            if (int.TryParse(TicketQuantity, out int quantity) && SelectedEvent != null)
             {
-                var priceString = SelectedCategory.Split('-').Last().Trim().TrimStart('$');
-                if (double.TryParse(priceString, out double price))
-                {
-                    TotalAmount = quantity * price;
-                }
+                TotalAmount = quantity * (double)SelectedEvent.TicketPrice;
             }
             else
             {
@@ -276,19 +140,39 @@ namespace InterfazTicketsApp.ViewModels
 
         private async void OnConfirmPurchase()
         {
-            int purchaseId = await _apiService.SavePurchaseAsync(HolderName, HolderId, int.Parse(TicketQuantity), SelectedCategory, (decimal)TotalAmount, SelectedEvent.EventName, SelectedEvent.EventLocation, SelectedEvent.EventDate);
-            await Application.Current.MainPage.DisplayAlert("Compra Exitosa", $"Has comprado {TicketQuantity} tickets por un total de ${TotalAmount}. Número de orden: {purchaseId}", "OK");
+            var purchase = new Compra
+            {
+                HolderName = HolderName,
+                HolderId = HolderId,
+                TicketQuantity = int.Parse(TicketQuantity),
+                TotalAmount = (decimal)TotalAmount,
+                EventName = SelectedEvent.EventName,
+                CreditCardNumber = CreditCardNumber,
+                CardCode = CardCode,
+                ExpirationDate = DateTime.ParseExact(ExpirationDate, "MM/yy", null)
+            };
 
-            TicketQuantity = string.Empty;
-            CardName = string.Empty;
-            CardNumber = string.Empty;
-            CardExpiry = string.Empty;
-            CardCVC = string.Empty;
-            SelectedEvent = null;
-            SelectedCategory = null;
+            await _apiService.PostPurchaseAsync(purchase);
+
+            // Mostrar mensaje de confirmación
+            await Application.Current.MainPage.DisplayAlert("Compra Confirmada", "La compra se ha realizado exitosamente.", "OK");
+
+            // Limpiar campos después de la compra
             HolderName = string.Empty;
             HolderId = string.Empty;
+            TicketQuantity = string.Empty;
+            CreditCardNumber = string.Empty;
+            CardCode = string.Empty;
+            ExpirationDate = string.Empty;
+            SelectedEvent = null;
             TotalAmount = 0;
+
+        }
+
+
+        private void OnNavigateBack()
+        {
+            // Implementar la navegación de regreso
         }
     }
 }

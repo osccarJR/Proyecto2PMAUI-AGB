@@ -1,18 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using InterfazTicketsApp.Models;
+using InterfazTicketsApp.Services;
 
 namespace InterfazTicketsApp.ViewModels
 {
     public class MainPageViewModel : BindableObject
     {
+        private readonly IApiService _apiService;
         private string _searchQuery;
         private string _selectedCategory;
         private DateTime _selectedDate = DateTime.Now;
-        private ObservableCollection<DetailEvent> _allEvents;
-        private DetailEvent _selectedEvent;
+        private ObservableCollection<EventoDetalle> _allEvents;
+        private EventoDetalle _selectedEvent;
 
         public string SearchQuery
         {
@@ -47,7 +50,7 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
-        public DetailEvent SelectedEvent
+        public EventoDetalle SelectedEvent
         {
             get => _selectedEvent;
             set
@@ -61,76 +64,19 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
-        public ObservableCollection<DetailEvent> Events { get; }
+        public ObservableCollection<EventoDetalle> Events { get; }
 
-        public MainPageViewModel()
+        public MainPageViewModel(IApiService apiService)
         {
-            _allEvents = new ObservableCollection<DetailEvent>
-            {
-                new DetailEvent
-                {
-                    EventName = "Concierto de Rock",
-                    EventImage = "rock.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Teatro Nacional, Madrid",
-                    EventDescription = "Disfruta de una noche mágica con la mejor música rock interpretada por Van Halen.",
-                    Category = "Conciertos",
-                    LocalidadesImage = "localidades3.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Festival de Jazz",
-                    EventImage = "jazz.png",
-                    EventDate = DateTime.Now.AddMonths(2),
-                    EventLocation = "Parque Central, Barcelona",
-                    EventDescription = "Un festival con los mejores exponentes del jazz mundial.",
-                    Category = "Conciertos",
-                    LocalidadesImage = "localidades3.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Partido de Fútbol",
-                    EventImage = "futbol.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Estadio Santiago Bernabéu, Madrid",
-                    EventDescription = "Real Madrid vs Barcelona en un emocionante clásico.",
-                    Category = "Deportes",
-                    LocalidadesImage = "localidades1.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Maratón de Nueva York",
-                    EventImage = "maraton.jpg",
-                    EventDate = DateTime.Now.AddMonths(3),
-                    EventLocation = "Nueva York, USA",
-                    EventDescription = "Únete a miles de corredores en una de las maratones más famosas del mundo.",
-                    Category = "Deportes",
-                    LocalidadesImage = "localidades1.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Obra de Teatro 'Hamlet'",
-                    EventImage = "hamlet.jpg",
-                    EventDate = DateTime.Now.AddMonths(1),
-                    EventLocation = "Teatro Real, Madrid",
-                    EventDescription = "Una interpretación moderna del clásico de Shakespeare.",
-                    Category = "Teatro",
-                    LocalidadesImage = "localidades2.jpg"
-                },
-                new DetailEvent
-                {
-                    EventName = "Musical 'El Rey León'",
-                    EventImage = "rey_leon.jpeg",
-                    EventDate = DateTime.Now.AddMonths(2),
-                    EventLocation = "Teatro Lope de Vega, Madrid",
-                    EventDescription = "Disfruta del famoso musical con impresionantes escenografías y música inolvidable.",
-                    Category = "Teatro",
-                    LocalidadesImage = "localidades2.jpg"
-                }
-            };
+            _apiService = apiService;
+            Events = new ObservableCollection<EventoDetalle>();
+            LoadEvents();
+        }
 
-            Events = new ObservableCollection<DetailEvent>(_allEvents);
-
+        private async void LoadEvents()
+        {
+            var events = await _apiService.GetDetailEventsAsync();
+            _allEvents = new ObservableCollection<EventoDetalle>(events);
             OnSearch();
         }
 
@@ -138,7 +84,7 @@ namespace InterfazTicketsApp.ViewModels
         {
             var filteredEvents = _allEvents.Where(e =>
                 (string.IsNullOrEmpty(SearchQuery) || e.EventName.ToLower().Contains(SearchQuery.ToLower())) &&
-                (SelectedCategory == "Ver Todos" || string.IsNullOrEmpty(SelectedCategory) || e.Category == SelectedCategory)
+                (SelectedCategory == "Ver Todos" || string.IsNullOrEmpty(SelectedCategory))
             ).ToList();
 
             Events.Clear();
@@ -148,9 +94,9 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
-        public async void NavigateToDetails(DetailEvent selectedEvent)
+        public async void NavigateToDetails(EventoDetalle selectedEvent)
         {
-            await Shell.Current.GoToAsync($"///Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate}&localidadesImage={selectedEvent.LocalidadesImage}");
+            await Shell.Current.GoToAsync($"///Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate}&ticketPrice={selectedEvent.TicketPrice}");
         }
     }
 }

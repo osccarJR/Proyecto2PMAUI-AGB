@@ -3,14 +3,14 @@ using Microsoft.Maui.Controls;
 
 namespace InterfazTicketsApp.ViewModels
 {
-    public class EventDetailViewModel : BindableObject
+    public class EventoDetalleViewModel : BindableObject
     {
         private string _eventName;
         private string _eventImage;
         private DateTime _eventDate;
         private string _eventLocation;
         private string _eventDescription;
-        private string _localidadesImage;
+        private decimal _ticketPrice;
 
         public string EventName
         {
@@ -62,12 +62,12 @@ namespace InterfazTicketsApp.ViewModels
             }
         }
 
-        public string LocalidadesImage
+        public decimal TicketPrice
         {
-            get => _localidadesImage;
+            get => _ticketPrice;
             set
             {
-                _localidadesImage = value;
+                _ticketPrice = value;
                 OnPropertyChanged();
             }
         }
@@ -75,7 +75,7 @@ namespace InterfazTicketsApp.ViewModels
         public ICommand BuyTicketsCommand { get; }
         public ICommand GoBackCommand { get; }
 
-        public EventDetailViewModel()
+        public EventoDetalleViewModel()
         {
             BuyTicketsCommand = new Command(OnBuyTickets);
             GoBackCommand = new Command(OnGoBack);

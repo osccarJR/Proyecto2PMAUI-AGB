@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 
 namespace InterfazTicketsApp.Behaviors
 {
@@ -11,46 +6,50 @@ namespace InterfazTicketsApp.Behaviors
     {
         protected override void OnAttachedTo(Entry bindable)
         {
-            bindable.TextChanged += OnTextChanged;
+            bindable.TextChanged += OnEntryTextChanged;
             base.OnAttachedTo(bindable);
         }
 
         protected override void OnDetachingFrom(Entry bindable)
         {
-            bindable.TextChanged -= OnTextChanged;
+            bindable.TextChanged -= OnEntryTextChanged;
             base.OnDetachingFrom(bindable);
         }
 
-        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        void OnEntryTextChanged(object sender, TextChangedEventArgs e)
         {
             var entry = (Entry)sender;
-            var text = entry.Text;
+            string newText = entry.Text.Replace("/", "");
 
-            if (string.IsNullOrEmpty(text))
-                return;
-
-            if (text.Length == 2 && e.OldTextValue?.Length != 3)
+            if (newText.Length > 4)
             {
-                text += "/";
+                newText = newText.Substring(0, 4);
             }
 
-            if (text.Length > 5)
+            if (newText.Length >= 2)
             {
-                text = text.Substring(0, 5);
-            }
-
-            entry.Text = text;
-
-            if (text.Length == 5)
-            {
-                var month = int.Parse(text.Substring(0, 2));
-                var year = int.Parse(text.Substring(3, 2)) + 2000;
-
-                if (month < 1 || month > 12 || year < DateTime.Now.Year || (year == DateTime.Now.Year && month < DateTime.Now.Month))
+                if (int.TryParse(newText.Substring(0, 2), out int month))
                 {
-                    entry.Text = e.OldTextValue;
+                    if (month < 1 || month > 12)
+                    {
+                        newText = "12";
+                    }
+
+                    if (newText.Length > 3)
+                    {
+                        int year = int.Parse(newText.Substring(2, 2));
+                        if (year < 24)
+                        {
+                            newText = newText.Substring(0, 2) + "24";
+                        }
+                    }
+
+                    newText = newText.Insert(2, "/");
                 }
             }
+
+            entry.Text = newText;
         }
     }
 }
+

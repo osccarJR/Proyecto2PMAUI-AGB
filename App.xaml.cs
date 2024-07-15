@@ -1,28 +1,38 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using InterfazTicketsApp.Services;
+﻿using Microsoft.Maui.Controls;
+using InterfazTicketsApp.Data;
+using System.IO;
 
 namespace InterfazTicketsApp
 {
     public partial class App : Application
     {
-        public static IApiService ApiService { get; private set; }
+        public static IServiceProvider ServiceProvider { get; private set; }
+        static WeatherDatabase database;
+        public static string DatabasePath;
 
-        public App()
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-
+            ServiceProvider = serviceProvider;
+            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "weather.db3");
             MainPage = new AppShell();
         }
 
-        public App(IApiService apiService)
+        public static WeatherDatabase Database
         {
-            InitializeComponent();
-
-            MainPage = new AppShell();
-            ApiService = apiService;
+            get
+            {
+                if (database == null)
+                {
+                    database = new WeatherDatabase(DatabasePath);
+                }
+                return database;
+            }
         }
     }
 }
+
+
+
+
+

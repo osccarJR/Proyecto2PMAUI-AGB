@@ -1,4 +1,9 @@
-﻿using Microsoft.Maui.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 using InterfazTicketsApp.ViewModels;
 
 namespace InterfazTicketsApp.Views
@@ -8,7 +13,7 @@ namespace InterfazTicketsApp.Views
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainPageViewModel();
+            BindingContext = App.ServiceProvider.GetService<MainPageViewModel>();
         }
     }
 }

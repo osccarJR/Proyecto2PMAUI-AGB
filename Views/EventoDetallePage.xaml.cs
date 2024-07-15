@@ -3,12 +3,12 @@ using InterfazTicketsApp.ViewModels;
 
 namespace InterfazTicketsApp.Views
 {
-    public partial class PurchasePage : ContentPage
+    public partial class EventoDetallePage : ContentPage
     {
-        public PurchasePage()
+        public EventoDetallePage()
         {
             InitializeComponent();
-            BindingContext = App.ServiceProvider.GetService<PurchaseViewModel>();
+            BindingContext = new EventoDetalleViewModel();
         }
     }
 }

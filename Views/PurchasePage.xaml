@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:InterfazTicketsApp.Behaviors"
+             xmlns:viewModels="clr-namespace:InterfazTicketsApp.ViewModels"
+             xmlns:behaviors="clr-namespace:InterfazTicketsApp.Behaviors"
              x:Class="InterfazTicketsApp.Views.PurchasePage"
-             Title="Compra de Tickets"
-             IconImageSource="compra.jpg">
-    <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20" Spacing="15">
-                <Label Text="Compra de Tickets" Style="{StaticResource TitleLabel}" HorizontalOptions="Center"/>
+             Title="Purchase Page">
 
-                <Picker Title="Seleccione el evento" ItemsSource="{Binding Events}" ItemDisplayBinding="{Binding EventName}" SelectedItem="{Binding SelectedEvent}"/>
 
-                <Picker Title="Seleccione la categoría" ItemsSource="{Binding TicketCategories}" SelectedItem="{Binding SelectedCategory}"/>
+    <StackLayout Padding="20">
+        <Label Text="Evento" />
+        <Picker ItemsSource="{Binding Events}" ItemDisplayBinding="{Binding EventName}" SelectedItem="{Binding SelectedEvent}" />
 
-                <Entry x:Name="TicketQuantityEntry" Placeholder="Cantidad de tickets" Keyboard="Numeric" Text="{Binding TicketQuantity}"/>
+        <Label Text="Cantidad de Tickets" />
+        <Entry Text="{Binding TicketQuantity}" Keyboard="Numeric" />
 
-                <Label Text="{Binding TotalAmount, StringFormat='Monto total: ${0:F2}'}" FontSize="18" FontAttributes="Bold" />
+        <Label Text="Nombre del Comprador" />
+        <Entry Text="{Binding HolderName}">
+            <Entry.Behaviors>
+                <behaviors:ComportamientoLetras />
+            </Entry.Behaviors>
+        </Entry>
 
-                <Entry x:Name="HolderNameEntry" Placeholder="Nombre del titular" Text="{Binding HolderName}" />
-                <Entry x:Name="HolderIdEntry" Placeholder="Número de cédula" Keyboard="Numeric" Text="{Binding HolderId}">
-                    <Entry.Behaviors>
-                        <local:ComportamientoNumerico MaxLength="10" />
-                    </Entry.Behaviors>
-                </Entry>
+        <Label Text="Número de Cédula" />
+        <Entry Text="{Binding HolderId}" Keyboard="Numeric">
+            <Entry.Behaviors>
+                <behaviors:ComportamientoNumerico MaxLength="10" />
+            </Entry.Behaviors>
+        </Entry>
 
-                <Entry x:Name="CardNameEntry" Placeholder="Nombre en la tarjeta" Text="{Binding CardName}"/>
-                <Entry x:Name="CardNumberEntry" Placeholder="Número de tarjeta" Keyboard="Numeric" Text="{Binding CardNumber}"/>
-                <Entry x:Name="CardExpiryEntry" Placeholder="Fecha de expiración (MM/AA)" Keyboard="Numeric" Text="{Binding CardExpiry}">
-                    <Entry.Behaviors>
-                        <local:ComportamientoExpira />
-                    </Entry.Behaviors>
-                </Entry>
-                <Entry x:Name="CardCVCEntry" Placeholder="CVC" Keyboard="Numeric" Text="{Binding CardCVC}">
-                    <Entry.Behaviors>
-                        <local:ComportamientoNumerico MaxLength="5" />
-                    </Entry.Behaviors>
-                </Entry>
+        <Label Text="Número de Tarjeta de Crédito" />
+        <Entry Text="{Binding CreditCardNumber}" Keyboard="Numeric" />
 
-                <Button x:Name="ConfirmPurchaseButton" Text="Comprar" Command="{Binding ConfirmPurchaseCommand}" IsEnabled="{Binding IsPurchaseEnabled}"/>
-            </StackLayout>
-        </ScrollView>
-    </ContentPage.Content>
+        <Label Text="Código de Tarjeta" />
+        <Entry Text="{Binding CardCode}" Keyboard="Numeric" />
+
+        <Label Text="Fecha de Caducidad" />
+        <Entry Text="{Binding ExpirationDate}" Keyboard="Numeric" Placeholder="MM/AA">
+            <Entry.Behaviors>
+                <behaviors:ComportamientoExpira />
+            </Entry.Behaviors>
+        </Entry>
+
+        <Label Text="Total" />
+        <Label Text="{Binding TotalAmount}" />
+
+        <Button Text="Confirmar Compra" Command="{Binding ConfirmPurchaseCommand}" />
+    </StackLayout>
 </ContentPage>

@@ -2,9 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:InterfazTicketsApp.ViewModels"
-             x:Class="InterfazTicketsApp.Views.EventDetailPage"
-             Title="Detalles del Evento"
-             IconImageSource="detalles.jpg">
+             x:Class="InterfazTicketsApp.Views.EventoDetallePage"
+             Title="Event Detail Page">
+    <ContentPage.BindingContext>
+        <viewModels:EventoDetalleViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10" Spacing="15">
@@ -13,10 +15,12 @@
                 <Label Text="{Binding EventDate, StringFormat='{0:dd/MM/yyyy}'}" FontSize="18" />
                 <Label Text="{Binding EventLocation}" FontSize="18" />
                 <Label Text="{Binding EventDescription}" FontSize="16" TextColor="Gray" />
-                <Image Source="{Binding LocalidadesImage}" HeightRequest="200" />
+                <Label Text="Precio del Ticket" FontSize="18" FontAttributes="Bold" />
+                <Label Text="{Binding TicketPrice, StringFormat='Precio: {0:C}'}" FontSize="16" />
                 <Button Text="Comprar" Command="{Binding BuyTicketsCommand}" />
                 <Button Text="Atrás" Command="{Binding GoBackCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
+

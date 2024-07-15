@@ -1,7 +1,8 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui;
+using Microsoft.Maui.Hosting;
 using InterfazTicketsApp.Services;
+using InterfazTicketsApp.ViewModels;
 
 namespace InterfazTicketsApp
 {
@@ -17,10 +18,15 @@ namespace InterfazTicketsApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            // Registro del servicio ApiService como IApiService
+            // Registra ApiService e instancias de ViewModel
             builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddTransient<MainPageViewModel>();
+            builder.Services.AddTransient<PurchaseViewModel>();
 
             return builder.Build();
         }
     }
 }
+
+
+

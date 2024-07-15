@@ -1,19 +1,14 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:InterfazTicketsApp.Views"
-       x:Class="InterfazTicketsApp.AppShell">
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:InterfazTicketsApp.Views"
+    x:Class="InterfazTicketsApp.AppShell">
 
-    <TabBar>
-        <ShellContent Title="Buscar" Icon="buscar.jpg" ContentTemplate="{DataTemplate local:MainPage}" Route="Buscar"/>
-        <ShellContent Title="Detalles" Icon="detalles.jpg" ContentTemplate="{DataTemplate local:EventDetailPage}" Route="Detalles"/>
-        <ShellContent Title="Compra" Icon="compra.jpg" ContentTemplate="{DataTemplate local:PurchasePage}" Route="Compra"/>
-        <ShellContent Title="Detalle" Icon="perfil.jpg" ContentTemplate="{DataTemplate local:UserProfilePage}" />
-        <ShellContent Title="Comentarios" Icon="comentario.jpg" ContentTemplate="{DataTemplate local:CommentsPage}" />
-    </TabBar>
+    <ShellContent Title="Buscar Eventos" ContentTemplate="{DataTemplate views:MainPage}" Route="Buscar" />
+    <ShellContent Title="Compra de Tickets" ContentTemplate="{DataTemplate views:PurchasePage}" Route="Compra" />
+    <ShellContent Title="Detalles del Evento" ContentTemplate="{DataTemplate views:EventoDetallePage}" Route="Detalles" />
+    <ShellContent Title="Clima" ContentTemplate="{DataTemplate views:WeatherPage}" Route="Clima" />
+    <ShellContent Title="Registros de Clima" ContentTemplate="{DataTemplate views:WeatherRecordsPage}" Route="WeatherRecords" />
 
-    <!-- Define the route for the EventDetailPage -->
-    <ShellItem Route="Detalles">
-        <ShellContent ContentTemplate="{DataTemplate local:EventDetailPage}" />
-    </ShellItem>
 </Shell>

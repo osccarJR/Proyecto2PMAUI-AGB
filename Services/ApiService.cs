@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using InterfazTicketsApp.Models;
-using Newtonsoft.Json;
 
 namespace InterfazTicketsApp.Services
 {
@@ -15,74 +13,75 @@ namespace InterfazTicketsApp.Services
 
         public ApiService()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5168"); // URL base de la API
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
-
-        public async Task<string> GetUserNameByIdAsync(string id)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync($"/api/users/{id}");
-            if (response.IsSuccessStatusCode)
+            var handler = new HttpClientHandler
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<User>(jsonString);
-                return user?.UserName;
-            }
-            return null;
-        }
-
-        public async Task<List<Comment>> GetCommentsAsync()
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync("/api/comments");
-            if (response.IsSuccessStatusCode)
-            {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<List<Comment>>(jsonString);
-            }
-            return new List<Comment>();
-        }
-
-        public async Task SaveCommentsAsync(List<Comment> comments)
-        {
-            var jsonString = JsonConvert.SerializeObject(comments);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync("/api/comments", content);
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task<int> SavePurchaseAsync(string holderName, string holderId, int ticketQuantity, string selectedCategory, decimal totalAmount, string eventName, string eventLocation, DateTime eventDate)
-        {
-            var purchase = new Purchase
-            {
-                HolderName = holderName,
-                HolderId = holderId,
-                TicketQuantity = ticketQuantity,
-                SelectedCategory = selectedCategory,
-                TotalAmount = totalAmount,
-                EventName = eventName,
-                EventLocation = eventLocation,
-                EventDate = eventDate
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             };
-
-            var jsonString = JsonConvert.SerializeObject(purchase);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync("/api/purchases", content);
-            response.EnsureSuccessStatusCode();
-
-            var responseString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<int>(responseString); // Asumiendo que la API devuelve el ID de la compra como int
+            _httpClient = new HttpClient(handler)
+            {
+                BaseAddress = new Uri("https://localhost:7164/api/"), // Asegúrate de que esta dirección sea correcta
+                Timeout = TimeSpan.FromMinutes(2)
+            };
         }
 
-        public async Task<string> GetOrderDetailsAsync(int orderNumber, string identificationNumber)
+        public async Task<IEnumerable<EventoDetalle>> GetDetailEventsAsync()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync($"/api/orders/{orderNumber}/{identificationNumber}");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await response.Content.ReadAsStringAsync();
+                var response = await _httpClient.GetAsync("EventoDetalle").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                var eventos = await response.Content.ReadFromJsonAsync<IEnumerable<EventoDetalle>>().ConfigureAwait(false);
+                return eventos ?? new List<EventoDetalle>();
             }
-            return null;
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Request error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<Compra>> GetPurchasesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("Compras").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<IEnumerable<Compra>>().ConfigureAwait(false) ?? new List<Compra>();
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Request error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task PostPurchaseAsync(Compra purchase)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("Compras", purchase).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Request error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw;
+            }
         }
     }
 }
