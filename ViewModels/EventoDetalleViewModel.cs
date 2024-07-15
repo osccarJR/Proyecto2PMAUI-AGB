@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using System;
 
 namespace InterfazTicketsApp.ViewModels
 {
@@ -79,6 +80,16 @@ namespace InterfazTicketsApp.ViewModels
         {
             BuyTicketsCommand = new Command(OnBuyTickets);
             GoBackCommand = new Command(OnGoBack);
+        }
+
+        public void Initialize(string eventName, string eventDescription, string eventImage, string eventLocation, DateTime eventDate, decimal ticketPrice)
+        {
+            EventName = eventName;
+            EventDescription = eventDescription;
+            EventImage = eventImage;
+            EventLocation = eventLocation;
+            EventDate = eventDate;
+            TicketPrice = ticketPrice;
         }
 
         private async void OnBuyTickets()

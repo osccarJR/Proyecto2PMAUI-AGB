@@ -12,8 +12,6 @@ namespace InterfazTicketsApp.ViewModels
     {
         private readonly IApiService _apiService;
         private string _searchQuery;
-        private string _selectedCategory;
-        private DateTime _selectedDate = DateTime.Now;
         private ObservableCollection<EventoDetalle> _allEvents;
         private EventoDetalle _selectedEvent;
 
@@ -23,28 +21,6 @@ namespace InterfazTicketsApp.ViewModels
             set
             {
                 _searchQuery = value;
-                OnPropertyChanged();
-                OnSearch();
-            }
-        }
-
-        public string SelectedCategory
-        {
-            get => _selectedCategory;
-            set
-            {
-                _selectedCategory = value;
-                OnPropertyChanged();
-                OnSearch();
-            }
-        }
-
-        public DateTime SelectedDate
-        {
-            get => _selectedDate;
-            set
-            {
-                _selectedDate = value;
                 OnPropertyChanged();
                 OnSearch();
             }
@@ -83,8 +59,7 @@ namespace InterfazTicketsApp.ViewModels
         private void OnSearch()
         {
             var filteredEvents = _allEvents.Where(e =>
-                (string.IsNullOrEmpty(SearchQuery) || e.EventName.ToLower().Contains(SearchQuery.ToLower())) &&
-                (SelectedCategory == "Ver Todos" || string.IsNullOrEmpty(SelectedCategory))
+                string.IsNullOrEmpty(SearchQuery) || e.EventName.ToLower().Contains(SearchQuery.ToLower())
             ).ToList();
 
             Events.Clear();
@@ -96,7 +71,8 @@ namespace InterfazTicketsApp.ViewModels
 
         public async void NavigateToDetails(EventoDetalle selectedEvent)
         {
-            await Shell.Current.GoToAsync($"///Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate}&ticketPrice={selectedEvent.TicketPrice}");
+            var route = $"Detalles?eventName={selectedEvent.EventName}&eventDescription={selectedEvent.EventDescription}&eventImage={selectedEvent.EventImage}&eventLocation={selectedEvent.EventLocation}&eventDate={selectedEvent.EventDate:yyyy-MM-dd}&ticketPrice={selectedEvent.TicketPrice}";
+            await Shell.Current.GoToAsync(route);
         }
     }
 }
