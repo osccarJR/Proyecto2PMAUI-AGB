@@ -59,7 +59,6 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\4patas.png" />
 	  <None Remove="Resources\Images\buscar.jpg" />
-	  <None Remove="Resources\Images\comidacosteña.png" />
 	  <None Remove="Resources\Images\enviar.jpg" />
 	  <None Remove="Resources\Images\futbol.jpg" />
 	  <None Remove="Resources\Images\hamlet.jpg" />
