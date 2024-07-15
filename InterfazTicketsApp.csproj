@@ -57,8 +57,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\4patas.png" />
 	  <None Remove="Resources\Images\buscar.jpg" />
+	  <None Remove="Resources\Images\comidacostena.png" />
 	  <None Remove="Resources\Images\enviar.jpg" />
 	  <None Remove="Resources\Images\futbol.jpg" />
 	  <None Remove="Resources\Images\hamlet.jpg" />
@@ -69,6 +69,7 @@
 	  <None Remove="Resources\Images\localidades2.jpg" />
 	  <None Remove="Resources\Images\localidades3.jpg" />
 	  <None Remove="Resources\Images\maraton.jpg" />
+	  <None Remove="Resources\Images\patas.png" />
 	  <None Remove="Resources\Images\perfil.jpg" />
 	  <None Remove="Resources\Images\rey_leon.jpeg" />
 	  <None Remove="Resources\Images\rock.jpg" />
